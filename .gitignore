@@ -43,3 +43,7 @@ frontend/.vercel
 # typescript
 frontend/*.tsbuildinfo
 frontend/next-env.d.ts
+
+# ignore yarn.lock
+frontend/yarn.lock
+backend/yarn.lock
