@@ -2,9 +2,12 @@ import { Response } from "express";
 
 export default function HttpResponse(
   res: Response,
-  status: number,
+  code: any = undefined,
   message: any = undefined,
-  data: any = undefined
+  data: any = undefined,
+  status: number = 200
 ) {
-  return res.status(status).json({ success: status < 400, data, message });
+  return res
+    .status(status)
+    .json({ status, code, success: status < 400, message, data });
 }

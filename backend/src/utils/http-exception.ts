@@ -26,16 +26,19 @@ export enum statusCode {
 }
 
 class HttpException extends Error {
-  public status: number;
+  public status: statusCode;
   public data: any;
   public success: boolean;
+  public code: string;
   constructor(
     status: number = 500,
+    code: string = "INTERNAL_SERVER_ERROR",
     message: string = "Internal Server Error",
     data: any = undefined
   ) {
     super(message);
     this.status = status;
+    this.code = code;
     this.data = data;
     this.success = status < 400;
   }

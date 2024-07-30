@@ -1,5 +1,5 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import HttpException from "../utils/http-execption";
+import HttpException from "../utils/http-exception";
 
 const errorHandler: ErrorRequestHandler = (
   err: HttpException,
@@ -7,8 +7,10 @@ const errorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const { message, status, data, success } = err;
+  const { code, data, message, status, success } = err;
   return res.status(err.status).json({
+    status,
+    code,
     success,
     message,
     data,

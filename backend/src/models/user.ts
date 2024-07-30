@@ -1,4 +1,9 @@
-import { model, models, Schema } from "mongoose";
+import { Document, model, models, Schema } from "mongoose";
+interface UserTypes extends Document {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const userSchema = new Schema(
   {
@@ -21,6 +26,16 @@ const userSchema = new Schema(
   }
 );
 
-const User = models.users || model("users", userSchema);
+userSchema.set("toJSON", {
+  transform: (doc, ret) => {
+    const id = ret._id;
+    delete ret._id;
+    delete ret.password;
+    delete ret.__v;
+    return { id, ...ret };
+  },
+});
+
+const User = model<UserTypes>("users", userSchema);
 
 export default User;

@@ -1,11 +1,9 @@
+import { createToken } from "../middleware/jwt";
 import db from "../models";
-import HttpException, { statusCode } from "../utils/http-execption";
+import { CreateUser } from "../types/user";
+import HttpException, { statusCode } from "../utils/http-exception";
 import bcrypt from "bcrypt";
-export type User = {
-  name?: string;
-  email: string;
-  password: string;
-};
+import { Codes, Messages } from "../utils/codes-messages";
 
 class userService {
   // password hashing
@@ -19,12 +17,13 @@ class userService {
   }
 
   //register user
-  static async register(user: User) {
+  static async register(user: CreateUser) {
     const existedUser = await db.user.findOne({ email: user.email });
     if (existedUser) {
       throw new HttpException(
         statusCode.BadRequest,
-        "This email address is already associated with another account. Try with another email."
+        Codes.account_exist,
+        Messages.account_exist
       );
     }
     const hashPwd = await userService.hashPwd(user.password);
@@ -32,12 +31,13 @@ class userService {
   }
 
   //login
-  static async login(user: User) {
+  static async login(user: CreateUser) {
     const data = await db.user.findOne({ email: user.email });
     if (!data) {
       throw new HttpException(
         statusCode.NotFound,
-        "Sorry, we don't recognize that Email.You can create new Account"
+        Codes.account_not_found,
+        Messages.account_not_found
       );
     }
 
@@ -50,9 +50,17 @@ class userService {
     if (!isCorrectPassword) {
       throw new HttpException(
         statusCode.BadRequest,
-        "Sorry, we don't recognize that Password. You can try again or Forgot your password"
+        Codes.password_incorrect,
+        Messages.password_incorrect
       );
     }
+    //token
+    return createToken(data.toJSON());
+  }
+
+  //session
+  static session(userId: string) {
+    return db.user.findOne({ _id: userId });
   }
 }
 
