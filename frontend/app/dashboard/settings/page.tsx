@@ -1,7 +1,8 @@
+import Feature from "@/components/dashboard/Feature";
 import React from "react";
 
 const SettingsPage = () => {
-  return <div>SettingsPage</div>;
+  return <Feature name="Settings" />;
 };
 
 export default SettingsPage;

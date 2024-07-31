@@ -30,16 +30,19 @@ class HttpException extends Error {
   public data: any;
   public success: boolean;
   public code: string;
+  public form: object;
   constructor(
     status: number = 500,
     code: string = "INTERNAL_SERVER_ERROR",
     message: string = "Internal Server Error",
-    data: any = undefined
+    data: any = undefined,
+    form: any = undefined
   ) {
     super(message);
     this.status = status;
     this.code = code;
     this.data = data;
+    this.form = form;
     this.success = status < 400;
   }
 }

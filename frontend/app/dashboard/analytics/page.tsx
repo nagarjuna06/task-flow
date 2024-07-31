@@ -1,7 +1,8 @@
+import Feature from "@/components/dashboard/Feature";
 import React from "react";
 
 const Analytics = () => {
-  return <div>Analytics</div>;
+  return <Feature name="Analytics" />;
 };
 
 export default Analytics;

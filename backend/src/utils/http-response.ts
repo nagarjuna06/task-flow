@@ -9,5 +9,5 @@ export default function HttpResponse(
 ) {
   return res
     .status(status)
-    .json({ status, code, success: status < 400, message, data });
+    .json({ code, success: status < 400, message, data });
 }

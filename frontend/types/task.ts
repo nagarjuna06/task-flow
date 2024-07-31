@@ -22,4 +22,6 @@ export type CreateTask = {
 
 export type Task = {
   createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 } & CreateTask;

@@ -7,13 +7,13 @@ const errorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const { code, data, message, status, success } = err;
+  const { code, data, message, status, success, form } = err;
   return res.status(err.status).json({
-    status,
     code,
     success,
     message,
     data,
+    form,
   });
 };
 

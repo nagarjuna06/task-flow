@@ -23,7 +23,11 @@ class userService {
       throw new HttpException(
         statusCode.BadRequest,
         Codes.account_exist,
-        Messages.account_exist
+        Messages.account_exist,
+        undefined,
+        {
+          email: Messages.account_exist,
+        }
       );
     }
     const hashPwd = await userService.hashPwd(user.password);
@@ -37,7 +41,11 @@ class userService {
       throw new HttpException(
         statusCode.NotFound,
         Codes.account_not_found,
-        Messages.account_not_found
+        Messages.account_not_found,
+        undefined,
+        {
+          email: Messages.account_not_found,
+        }
       );
     }
 
@@ -51,7 +59,11 @@ class userService {
       throw new HttpException(
         statusCode.BadRequest,
         Codes.password_incorrect,
-        Messages.password_incorrect
+        Messages.password_incorrect,
+        undefined,
+        {
+          password: Messages.password_incorrect,
+        }
       );
     }
     //token

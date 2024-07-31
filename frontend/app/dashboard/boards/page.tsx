@@ -1,7 +1,11 @@
+"use client";
+
+import Feature from "@/components/dashboard/Feature";
+
 import React from "react";
 
 const BoardsPage = () => {
-  return <div>BoardsPage</div>;
+  return <Feature name="Boards" />;
 };
 
 export default BoardsPage;

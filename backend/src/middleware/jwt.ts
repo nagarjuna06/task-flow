@@ -5,7 +5,7 @@ import HttpException, { statusCode } from "../utils/http-exception";
 import { User } from "../types/user";
 import { Codes, Messages } from "../utils/codes-messages";
 
-export const createToken = (user: User, expires: number = 24 * 60 * 60) => {
+export const createToken = (user: User, expires: number = 60 * 60) => {
   const { email, id } = user;
 
   return JWT.sign({ email, id }, settings.secret, { expiresIn: expires });

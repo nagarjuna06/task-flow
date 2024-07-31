@@ -1,6 +1,14 @@
 import Axios, { AxiosResponse } from "axios";
 import { getToken, setToken } from "./auth";
 
+export type ResponseStyle = {
+  code: string;
+  message: string;
+  success: string;
+  data?: any;
+  form?: any;
+};
+
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });

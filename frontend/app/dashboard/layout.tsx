@@ -1,13 +1,16 @@
-import Sidebar from "@/components/Sidebar";
+"use client";
+import Sidebar from "@/components/dashboard/Sidebar";
+import SessionProvider from "@/context/sessionContext";
 import React from "react";
-import { Toaster } from "react-hot-toast";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex">
-      <Sidebar />
-      {children}
-    </div>
+    <SessionProvider>
+      <div className="grid grid-cols-5 bg-secondary">
+        <Sidebar />
+        <div className="p-5 col-span-4">{children}</div>
+      </div>
+    </SessionProvider>
   );
 };
 
