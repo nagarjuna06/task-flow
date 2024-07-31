@@ -11,9 +11,7 @@ export const createTask = async (
 ) => {
   try {
     const task = await taskService.create_task(req.body, req.userId);
-    return HttpResponse(res, Codes.task_created, Messages.task_created, {
-      id: task.id,
-    });
+    return HttpResponse(res, Codes.task_created, Messages.task_created, task);
   } catch (error) {
     return next(error);
   }
@@ -50,7 +48,7 @@ export const updateTaskStatus = async (
   try {
     const updated_task = await taskService.update_task_status(
       req.params.task_id,
-      req.query.status as TaskStatus,
+      req.body.status as TaskStatus,
       req.userId
     );
     return HttpResponse(

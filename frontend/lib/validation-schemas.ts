@@ -31,13 +31,9 @@ const status = yup
   .oneOf(Object.values(TaskStatus))
   .required();
 export const taskSchema = yup.object({
-  title: yup.string().required().min(3).max(20),
+  title: yup.string().required().min(3).max(50),
   description: yup.string().min(5).max(500),
   priority: yup.mixed<TaskPriority>().oneOf(Object.values(TaskPriority)),
   status,
-  deadline: yup.string().required(),
-});
-
-export const taskStatusSchema = yup.object({
-  status,
+  deadline: yup.string(),
 });

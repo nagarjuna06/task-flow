@@ -15,13 +15,14 @@ export enum TaskPriority {
 export type CreateTask = {
   title: string;
   status: TaskStatus;
-  priority: TaskPriority;
-  deadline: Date;
+  priority?: TaskPriority;
+  deadline?: string;
   description?: string;
 };
 
 export type Task = {
+  id: string;
   createdBy: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 } & CreateTask;

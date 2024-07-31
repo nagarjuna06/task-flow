@@ -29,7 +29,13 @@ axios.interceptors.response.use(
     return res.data as AxiosResponse["data"];
   },
   (err) => {
-    return err.response.data;
+    if (err.response) {
+      return err.response.data;
+    }
+    return {
+      success: false,
+      data: null,
+    };
   }
 );
 

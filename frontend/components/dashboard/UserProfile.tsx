@@ -14,12 +14,10 @@ const UserProfile = () => {
   return (
     <div>
       <div className="flex gap-3 items-center">
-        <div className="bg-primary w-10 aspect-square flex justify-center items-center rounded-lg">
-          <span className="text-white font-bold text-lg">
-            {user.name.charAt(0).toUpperCase()}
-          </span>
-        </div>
-        <p>{user.name}</p>
+        <Button variant="gradient" className="text-lg">
+          {user.name.charAt(0).toUpperCase()}
+        </Button>
+        <p className="text-lg font-semibold">{user.name}</p>
       </div>
       {/* features */}
       <div className="flex justify-between mt-5 text-gray-500">
@@ -28,11 +26,7 @@ const UserProfile = () => {
           <Loader size={25} />
           <ChevronsRight size={25} />
         </div>
-        <Button
-          variant="secondary"
-          onClick={logoutSession}
-          className="text-gray-500 bg-gray-200"
-        >
+        <Button variant="special" onClick={logoutSession}>
           Logout
         </Button>
       </div>

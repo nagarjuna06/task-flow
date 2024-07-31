@@ -26,14 +26,11 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
   const fetchUser = useCallback(async () => {
-    try {
-      const res = await getSession();
+    const res = await getSession();
+    if (res.success) {
       setUser(res.data);
-    } catch (error) {
-      console.log("error");
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   }, []);
   useEffect(() => {
     fetchUser();
@@ -55,6 +52,5 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
 export default SessionProvider;
 
 export const useSession = (): SessionContextProps => {
-  const context = useContext(SessionContext);
-  return context;
+  return useContext(SessionContext);
 };

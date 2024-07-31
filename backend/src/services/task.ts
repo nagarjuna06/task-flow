@@ -1,4 +1,3 @@
-import mongoose, { MongooseError } from "mongoose";
 import db from "../models";
 import { CreateTask, TaskStatus } from "../types/task";
 import { Codes, Messages } from "../utils/codes-messages";
@@ -64,7 +63,7 @@ class taskService {
 
   // task listing
   static get_tasks(userId: string) {
-    return db.task.find({ createdBy: userId });
+    return db.task.find({ createdBy: userId }).sort({ updatedAt: 1 });
   }
 
   static async get_task_by_id(taskId: string, userId: string) {

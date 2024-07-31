@@ -61,7 +61,7 @@ const RegisterPage = () => {
                   message={errors[each.name as keyof object]}
                 />
               ))}
-              <Button type="submit" loading={isSubmitting}>
+              <Button type="submit" loading={isSubmitting} variant="gradient">
                 Register
               </Button>
             </Form>

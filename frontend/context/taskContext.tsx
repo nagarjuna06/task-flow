@@ -1,5 +1,12 @@
 "use client";
-import { CreateTask, Task } from "@/types/task";
+import {
+  createTaskApi,
+  deleteTaskApi,
+  getTasksApi,
+  updateTaskApi,
+  updateTaskStatusApi,
+} from "@/apis/task";
+import { CreateTask, Task, TaskStatus } from "@/types/task";
 import React, {
   createContext,
   PropsWithChildren,
@@ -8,33 +15,97 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import toast from "react-hot-toast";
 
 type TaskContextProps = {
   tasks: Task[];
-  addTask: (task: CreateTask) => void;
-  editTask: (taskId: string, task: Task) => void;
+  loading: boolean;
+  addTask: () => void;
+  editTask: (taskId: string) => void;
   removeTask: (taskId: string) => void;
-  updateTaskStatus: (taskId: string) => void;
+  updateTaskStatus: (taskId: string, status: TaskStatus) => void;
+  autoSaveTask: (task: CreateTask) => void;
   // sortTasks: (sortBy: string, order: string) => void,
 };
 const TaskContext = createContext<TaskContextProps>({
   tasks: [],
-  addTask: (task) => {},
-  editTask: (taskId, task) => {},
+  loading: false,
+  addTask: () => {},
+  editTask: (taskId) => {},
   removeTask: (taskId) => {},
-  updateTaskStatus: (taskId) => {},
+  updateTaskStatus: (taskId, status) => {},
+  autoSaveTask: (task) => {},
   // sortTasks: (sortBy: string, order: string) => {},
 });
 
 const TaskProvider = ({ children }: PropsWithChildren) => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tmpTask, setTempTask] = useState<CreateTask>();
   const [loading, setLoading] = useState<boolean>(true);
-  const addTask = (task: CreateTask) => {};
-  const editTask = (taskId: string, task: CreateTask) => {};
-  const removeTask = (taskId: string) => {};
-  const updateTaskStatus = (taskId: string) => {};
+  const [modify, setModify] = useState<boolean>(false);
 
-  const fetchTasks = useCallback(async () => {}, []);
+  const addTask = async () => {
+    if (modify) {
+      const res = await createTaskApi(tmpTask);
+      if (res.data) {
+        toast.success(res.message);
+        setTasks((prevTasks) => [...prevTasks, res.data]);
+        setModify(false);
+      }
+    }
+    setTempTask(undefined);
+  };
+  const editTask = async (taskId: string) => {
+    if (modify) {
+      const res = await updateTaskApi(taskId, tmpTask);
+      if (res.data) {
+        toast.success(res.message);
+        setModify(false);
+        const index = tasks.findIndex((task) => task.id === taskId);
+        if (index !== -1) {
+          const updatedTasks = [...tasks];
+          updatedTasks.splice(index, 1);
+          updatedTasks.push(res.data);
+          setTasks(updatedTasks);
+        }
+      }
+    }
+    setTempTask(undefined);
+  };
+  const removeTask = async (taskId: string) => {
+    const res = await deleteTaskApi(taskId);
+    if (res.success) {
+      toast.success(res.message);
+      const index = tasks.findIndex((task) => task.id === taskId);
+      const updatedTasks = [...tasks];
+      updatedTasks.splice(index, 1);
+      setTasks(updatedTasks);
+    }
+  };
+  const updateTaskStatus = async (taskId: string, status: TaskStatus) => {
+    const res = await updateTaskStatusApi(taskId, status);
+    if (res.data) {
+      toast.success(res.message);
+      const updatedTasks = [...tasks];
+      const index = tasks.findIndex((task) => task.id === taskId);
+      if (index !== -1) {
+        updatedTasks.splice(index, 1);
+        updatedTasks.push(res.data);
+        setTasks(updatedTasks);
+      }
+    }
+  };
+  const autoSaveTask = (task: CreateTask) => {
+    setTempTask(task);
+    setModify(true);
+  };
+  const fetchTasks = useCallback(async () => {
+    const res = await getTasksApi();
+    if (res.data) {
+      setTasks(res.data);
+    }
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     fetchTasks();
@@ -42,7 +113,15 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <TaskContext.Provider
-      value={{ tasks, addTask, editTask, removeTask, updateTaskStatus }}
+      value={{
+        tasks,
+        loading,
+        addTask,
+        editTask,
+        removeTask,
+        updateTaskStatus,
+        autoSaveTask,
+      }}
     >
       {children}
     </TaskContext.Provider>
@@ -52,6 +131,5 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
 export default TaskProvider;
 
 export const useTask = (): TaskContextProps => {
-  const context = useContext(TaskContext);
-  return context;
+  return useContext(TaskContext);
 };

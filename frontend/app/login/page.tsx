@@ -61,7 +61,7 @@ const LoginPage = () => {
                   message={errors[each.name as keyof object]}
                 />
               ))}
-              <Button type="submit" loading={isSubmitting}>
+              <Button type="submit" loading={isSubmitting} variant="gradient">
                 Login
               </Button>
             </Form>

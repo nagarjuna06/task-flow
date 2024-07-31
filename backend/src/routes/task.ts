@@ -22,7 +22,7 @@ taskRouter.put("/:task_id", validate(taskSchema, validateKey.body), updateTask);
 
 taskRouter.patch(
   "/:task_id",
-  validate(taskStatusSchema, validateKey.query),
+  validate(taskStatusSchema, validateKey.body),
   updateTaskStatus
 );
 
