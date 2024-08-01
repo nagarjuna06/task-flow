@@ -63,7 +63,7 @@ class taskService {
 
   // task listing
   static get_tasks(userId: string) {
-    return db.task.find({ createdBy: userId }).sort({ updatedAt: 1 });
+    return db.task.find({ createdBy: userId }).sort({ updatedAt: -1 });
   }
 
   static async get_task_by_id(taskId: string, userId: string) {

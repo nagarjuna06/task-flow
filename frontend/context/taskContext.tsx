@@ -49,7 +49,7 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
       const res = await createTaskApi(tmpTask);
       if (res.data) {
         toast.success(res.message);
-        setTasks((prevTasks) => [...prevTasks, res.data]);
+        setTasks((prevTasks) => [res.data, ...prevTasks]);
         setModify(false);
       }
     }
@@ -65,7 +65,7 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
         if (index !== -1) {
           const updatedTasks = [...tasks];
           updatedTasks.splice(index, 1);
-          updatedTasks.push(res.data);
+          updatedTasks.unshift(res.data);
           setTasks(updatedTasks);
         }
       }
@@ -90,7 +90,7 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
       const index = tasks.findIndex((task) => task.id === taskId);
       if (index !== -1) {
         updatedTasks.splice(index, 1);
-        updatedTasks.push(res.data);
+        updatedTasks.unshift(res.data);
         setTasks(updatedTasks);
       }
     }

@@ -30,7 +30,7 @@ const TaskCard = (task: Task) => {
       open={open}
       values={values}
     >
-      <div className="border border-gray-300 p-2 my-2 rounded-lg flex flex-col gap-2 bg-gray-100 select-none group">
+      <div className="border border-gray-300 p-2 rounded-lg flex flex-col gap-2 bg-gray-100 select-none group">
         <div>
           <h3 className="">{task.title}</h3>
           <p className="text-sm text-gray-500">{task.description}</p>

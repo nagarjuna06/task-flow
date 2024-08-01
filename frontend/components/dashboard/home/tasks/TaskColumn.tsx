@@ -22,7 +22,7 @@ const TaskColumn = ({ name, tasks }: Props) => {
       <Droppable droppableId={name} type="tasks">
         {(provided, snapshot) => (
           <div
-            className={cn("flex flex-col-reverse", {
+            className={cn("min-h-1 py-2 flex flex-col gap-3", {
               "bg-gray-200": snapshot.isDraggingOver,
             })}
             {...provided.droppableProps}
