@@ -83,16 +83,18 @@ const TaskProvider = ({ children }: PropsWithChildren) => {
     }
   };
   const updateTaskStatus = async (taskId: string, status: TaskStatus) => {
+    const updatedTasks = [...tasks];
+    const index = tasks.findIndex((task) => task.id === taskId);
+    if (index !== -1) {
+      const task = updatedTasks.splice(index, 1);
+      updatedTasks.unshift({ ...task[0], status });
+      setTasks(updatedTasks);
+    }
     const res = await updateTaskStatusApi(taskId, status);
     if (res.data) {
+      updatedTasks[0] = res.data;
+      setTasks(updatedTasks);
       toast.success(res.message);
-      const updatedTasks = [...tasks];
-      const index = tasks.findIndex((task) => task.id === taskId);
-      if (index !== -1) {
-        updatedTasks.splice(index, 1);
-        updatedTasks.unshift(res.data);
-        setTasks(updatedTasks);
-      }
     }
   };
   const autoSaveTask = (task: CreateTask) => {
